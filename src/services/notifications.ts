@@ -3,7 +3,7 @@ import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { api } from './api';
+import api from './api';
 
 const PUSH_TOKEN_KEY = 'riyalmind_push_token';
 
@@ -98,7 +98,7 @@ export async function savePushTokenToServer(token: string): Promise<boolean> {
       platform: Platform.OS,
       deviceName: Device.deviceName || 'Unknown',
     });
-    return response.success;
+    return response.data.success;
   } catch (error) {
     console.error('Error saving push token:', error);
     return false;

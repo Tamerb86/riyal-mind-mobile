@@ -93,6 +93,12 @@ export const authAPI = {
     return response.data;
   },
 
+  // Alias for getMe
+  getProfile: async () => {
+    const response = await api.get('/auth/me');
+    return response.data?.user || response.data;
+  },
+
   // Check if authenticated
   isAuthenticated: async () => {
     const token = await SecureStore.getItemAsync(AUTH_TOKEN_KEY);
@@ -138,10 +144,12 @@ export const expensesAPI = {
   create: async (data: {
     amount: number;
     categoryId: string;
+    category?: string;
     description?: string;
     date?: string;
     notes?: string;
     receipt?: string;
+    [key: string]: any;
   }) => {
     const response = await api.post('/expenses', data);
     return response.data;
@@ -180,6 +188,8 @@ export const incomeAPI = {
     source: string;
     description?: string;
     date?: string;
+    isRecurring?: boolean;
+    [key: string]: any;
   }) => {
     const response = await api.post('/income', data);
     return response.data;
@@ -205,6 +215,8 @@ export const budgetsAPI = {
     category: string;
     amount: number;
     period: string;
+    limit?: number;
+    [key: string]: any;
   }) => {
     const response = await api.post('/budgets', data);
     return response.data;
@@ -237,6 +249,8 @@ export const goalsAPI = {
     targetAmount: number;
     deadline?: string;
     icon?: string;
+    type?: string;
+    [key: string]: any;
   }) => {
     const response = await api.post('/goals', data);
     return response.data;
@@ -283,6 +297,8 @@ export const loansAPI = {
     monthlyPayment: number;
     startDate: string;
     nextPaymentDate?: string;
+    paidAmount?: number;
+    [key: string]: any;
   }) => {
     const response = await api.post('/loans', data);
     return response.data;
@@ -391,10 +407,12 @@ export const recurringAPI = {
     name: string;
     amount: number;
     categoryId: string;
+    category?: string;
     frequency: string;
     startDate: string;
     endDate?: string;
     description?: string;
+    [key: string]: any;
   }) => {
     const response = await api.post('/recurring', data);
     return response.data;

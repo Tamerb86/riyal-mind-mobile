@@ -127,12 +127,10 @@ export default function RecurringScreen() {
     try {
       const response = await recurringAPI.create({
         name: newRecurring.name,
-        category: newRecurring.category,
+        categoryId: newRecurring.category,
         amount: parseFloat(newRecurring.amount),
         frequency: newRecurring.frequency,
-        autoAdd: newRecurring.autoAdd,
-        nextDate: new Date().toISOString(),
-        isActive: true,
+        startDate: new Date().toISOString(),
       });
 
       setRecurring([...recurring, response.recurring]);

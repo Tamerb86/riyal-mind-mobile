@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { api } from '../services/api';
+import api from '../services/api';
 import debounce from 'lodash.debounce';
 
 export interface Category {
@@ -39,12 +39,12 @@ export function useAutoCategory() {
           amount,
         });
 
-        if (response.success) {
+        if (response.data.success) {
           setSuggestion({
-            categoryId: response.categoryId,
-            category: response.category,
-            confidence: response.confidence,
-            reasoning: response.reasoning,
+            categoryId: response.data.categoryId,
+            category: response.data.category,
+            confidence: response.data.confidence,
+            reasoning: response.data.reasoning,
           });
         }
       } catch (err) {
@@ -71,8 +71,8 @@ export function useAutoCategory() {
     try {
       const response = await api.get(`/expenses/categorize?q=${encodeURIComponent(query)}&limit=5`);
       
-      if (response.success) {
-        setSuggestions(response.categories);
+      if (response.data.success) {
+        setSuggestions(response.data.categories);
       }
     } catch (err) {
       console.error('Get suggestions error:', err);
@@ -84,8 +84,8 @@ export function useAutoCategory() {
     try {
       const response = await api.get('/expenses/categorize');
       
-      if (response.success) {
-        return response.categories;
+      if (response.data.success) {
+        return response.data.categories;
       }
       return [];
     } catch (err) {

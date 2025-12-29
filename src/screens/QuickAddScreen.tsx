@@ -107,7 +107,7 @@ export default function QuickAddScreen() {
     try {
       const response = await expensesAPI.create({
         amount: parseFloat(amount),
-        category,
+        categoryId: category,
         description: description || category,
         date: new Date().toISOString(),
       });

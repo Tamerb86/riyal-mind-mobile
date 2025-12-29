@@ -109,7 +109,7 @@ export default function BudgetsScreen() {
     try {
       const response = await budgetsAPI.create({
         category: newBudget.category,
-        limit: parseFloat(newBudget.limit),
+        amount: parseFloat(newBudget.limit),
         period: newBudget.period,
       });
 

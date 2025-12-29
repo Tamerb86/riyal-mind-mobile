@@ -7,6 +7,7 @@ interface User {
   name: string;
   email: string;
   image?: string;
+  subscription?: string;
 }
 
 interface UserStore {
@@ -15,6 +16,7 @@ interface UserStore {
   isAuthenticated: boolean;
   setUser: (user: User | null) => void;
   setLoading: (loading: boolean) => void;
+  clearUser: () => void;
   logout: () => Promise<void>;
 }
 
@@ -24,6 +26,7 @@ export const useUserStore = create<UserStore>((set) => ({
   isAuthenticated: false,
   setUser: (user) => set({ user, isAuthenticated: !!user }),
   setLoading: (isLoading) => set({ isLoading }),
+  clearUser: () => set({ user: null, isAuthenticated: false }),
   logout: async () => {
     await SecureStore.deleteItemAsync('authToken');
     set({ user: null, isAuthenticated: false });
@@ -44,6 +47,7 @@ interface ExpensesStore {
   expenses: Expense[];
   totalExpenses: number;
   isLoading: boolean;
+  loading: boolean;
   setExpenses: (expenses: Expense[]) => void;
   addExpense: (expense: Expense) => void;
   updateExpense: (id: string, data: Partial<Expense>) => void;
@@ -55,6 +59,7 @@ export const useExpensesStore = create<ExpensesStore>((set) => ({
   expenses: [],
   totalExpenses: 0,
   isLoading: false,
+  loading: false,
   setExpenses: (expenses) =>
     set({
       expenses,
@@ -95,6 +100,7 @@ interface IncomeStore {
   incomes: Income[];
   totalIncome: number;
   isLoading: boolean;
+  loading: boolean;
   setIncomes: (incomes: Income[]) => void;
   addIncome: (income: Income) => void;
   deleteIncome: (id: string) => void;
@@ -105,6 +111,7 @@ export const useIncomeStore = create<IncomeStore>((set) => ({
   incomes: [],
   totalIncome: 0,
   isLoading: false,
+  loading: false,
   setIncomes: (incomes) =>
     set({
       incomes,

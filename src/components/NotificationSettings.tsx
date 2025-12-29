@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
@@ -90,7 +91,7 @@ export default function NotificationSettings() {
           'يرجى تفعيل الإشعارات من إعدادات الجهاز',
           [
             { text: 'إلغاء', style: 'cancel' },
-            { text: 'فتح الإعدادات', onPress: () => Notifications.openSettingsAsync() },
+            { text: 'فتح الإعدادات', onPress: () => Linking.openSettings() },
           ]
         );
         return;
@@ -220,7 +221,7 @@ export default function NotificationSettings() {
       {permissionStatus === 'denied' && (
         <TouchableOpacity
           style={styles.warningContainer}
-          onPress={() => Notifications.openSettingsAsync()}
+          onPress={() => Linking.openSettings()}
         >
           <Ionicons name="warning" size={20} color="#F59E0B" />
           <Text style={styles.warningText}>

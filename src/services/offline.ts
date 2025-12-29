@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo, { NetInfoState } from '@react-native-community/netinfo';
-import { api } from './api';
+import api from './api';
 
 // Storage keys
 const KEYS = {
@@ -205,7 +205,7 @@ export async function downloadAllData(): Promise<void> {
 
   try {
     // Fetch all data in parallel
-    const [expenses, income, budgets, goals] = await Promise.all([
+    const [expensesRes, incomeRes, budgetsRes, goalsRes] = await Promise.all([
       api.get('/expenses?limit=500'),
       api.get('/income?limit=100'),
       api.get('/budgets'),
@@ -214,10 +214,10 @@ export async function downloadAllData(): Promise<void> {
 
     // Save to offline storage
     await Promise.all([
-      saveOfflineData('EXPENSES', expenses.expenses || []),
-      saveOfflineData('INCOME', income.income || []),
-      saveOfflineData('BUDGETS', budgets.budgets || []),
-      saveOfflineData('GOALS', goals.goals || []),
+      saveOfflineData('EXPENSES', expensesRes.data.expenses || []),
+      saveOfflineData('INCOME', incomeRes.data.income || []),
+      saveOfflineData('BUDGETS', budgetsRes.data.budgets || []),
+      saveOfflineData('GOALS', goalsRes.data.goals || []),
     ]);
 
     // Update last sync time
@@ -307,8 +307,8 @@ export async function createExpenseOffline(expense: any): Promise<any> {
 export async function getExpensesOffline(params?: any): Promise<any[]> {
   if (isOnline) {
     try {
-      const result = await api.get('/expenses', params);
-      const expenses = result.expenses || [];
+      const result = await api.get('/expenses', { params });
+      const expenses = result.data.expenses || [];
       await saveOfflineData('EXPENSES', expenses);
       return expenses;
     } catch (error) {
